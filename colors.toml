@@ -1,0 +1,70 @@
+# Bleach
+#
+# The wallpapers in this theme are four matching promo posters: Ichigo and
+# company printed in a two-colour duotone, a warm near-black (#10060A) and a
+# magenta ramp from #5F1F3A in the shadows up to #E755A4 in the highlights.
+# Measured across all four, 92% of the saturated pixels fall between 300 and
+# 360 degrees of hue. The art has already spent the entire pink budget.
+#
+# So this palette does not follow the posters, it answers them. The neutrals
+# lean violet (285 degrees) rather than magenta, the accent is the posters' own
+# colour used sparingly where it earns attention, and the rest of the palette
+# is built on the opposite side of the wheel:
+#
+#   magenta   #E23C8C   the accent: the posters' magenta, lifted to read as UI
+#   jade      #4FAE86   the complement, 155 degrees, the counterweight
+#   teal      #48A8B8   split-complement, for cyan
+#   indigo    #6B82D8   the third leg, and very Bleach: reiatsu blue
+#   ink       #120A0E   the posters' own near-black, taken straight off them
+#   paper     #F2EFF5   the brightest white, with the faintest violet lean
+#
+# Black and white are the other half of Bleach's own language: the black
+# shihakusho, the white captain's haori, a Hollow's mask. That pairing carries
+# the theme; the magenta is the accent on top of it, not the ground it stands
+# on.
+
+mode = "dark"
+
+# The posters' magenta, lifted until it can carry UI text (4.9:1 on ink).
+accent = "#E23C8C"
+
+# Wine-dark selection, because a grey one would look borrowed from elsewhere.
+selection = "#3A1B2C"
+muted = "#7E7480"
+
+background = "#120A0E"
+dark_background = "#0E070A"
+darker_background = "#0A0508"
+lighter_background = "#1E121A"
+
+foreground = "#DCD6DE"
+dark_foreground = "#5A5060"
+light_foreground = "#AFA6B2"
+bright_foreground = "#F2EFF5"
+
+# Reiatsu rather than a stripe: magenta drawn out into indigo.
+hyprland_active_border = "rgba(e23c8cee) rgba(4b3a8fdd) 45deg"
+
+# Warm side. Vermilion sits far enough from magenta to stay tellable apart.
+red = "#E0524F"
+orange = "#D97A3C"
+yellow = "#D8B44A"
+
+# Cool side, and the reason the theme is not simply pink: jade is magenta's
+# complement, teal its split-complement, indigo the reiatsu blue.
+green = "#4FAE86"
+cyan = "#48A8B8"
+blue = "#6B82D8"
+
+# The posters' own magenta, reserved so the accent stays an accent.
+magenta = "#D9569E"
+
+# Oxblood: the posters' shadow magenta (#5F1F3A) grown up.
+brown = "#9A5560"
+
+bright_red = "#F2706B"
+bright_yellow = "#EDCD6A"
+bright_green = "#67CBA1"
+bright_cyan = "#63C4D4"
+bright_blue = "#8B9DE6"
+bright_magenta = "#F07EB8"
