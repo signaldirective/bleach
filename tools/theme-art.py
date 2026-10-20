@@ -129,22 +129,24 @@ def build_preview(p):
 
 
 # ------------------------------------------------------------------- unlock
-
 def fit_text(canvas: Image.Image, text: str, fnt: ImageFont.FreeTypeFont,
-             target_h: float, dx: int = 0, dy: int = 0, weight_passes: int = 6,
+             target_h: float, dx: int = 0, dy: int = 0, stroke_width: int = 0,
              colour=(255, 255, 255, 255), condense: float = 1.0) -> tuple[int, int]:
     """Draw `text` centred on `canvas`, scaled to occupy `target_h` of its height.
 
-    Measures the glyphs and scales them to fit rather than trusting font
-    metrics: that is what keeps a boot logo off the edges of its canvas.
+    Uses native Pillow stroke boundaries to expand font weight cleanly without
+    shifting text diagonally, ensuring characters don't bleed into each other.
     Returns the (width, height) the text ended up.
     """
     cw, ch = canvas.size
     big = cw
     scratch = Image.new("RGBA", (big, ch * 2), (0, 0, 0, 0))
     sd = ImageDraw.Draw(scratch)
-    for i in range(weight_passes):                      # fake the weight
-        sd.text((big // 4 + i, ch // 2 + i), text, font=fnt, fill=colour)
+    
+    # Render text cleanly using native stroke parameters for extra weight
+    sd.text((big // 4, ch // 2), text, font=fnt, fill=colour, 
+            stroke_width=stroke_width, stroke_fill=colour)
+            
     bbox = scratch.getbbox()
     glyphs = scratch.crop(bbox)
     scale = (ch * target_h) / glyphs.height
@@ -156,24 +158,19 @@ def fit_text(canvas: Image.Image, text: str, fnt: ImageFont.FreeTypeFont,
 
 
 def build_unlock(p):
-    """BLEACH struck through by a blade, the gesture the posters make.
-
-    Drawn at 4x and reduced once at the end: a boot logo is the one place in
-    the theme where a soft edge is unforgivable.
-    """
+    """BLEACH struck through by a blade, the gesture the posters make."""
     W, H = 800, 188
     S = 4
     cw, ch = W * S, H * S
     canvas = Image.new("RGBA", (cw, ch), (0, 0, 0, 0))
     paper = rgba(p["bright_foreground"], 255)
 
+    # Replaced weight_passes=6 with a clean native stroke_width=6
     tw, th = fit_text(canvas, "BLEACH", font(SANS_CONDENSED_BOLD, int(600 * 1.0)),
-                      0.72, weight_passes=6, colour=paper, condense=0.86)
+                      0.72, stroke_width=6, colour=paper, condense=0.86)
 
     d = ImageDraw.Draw(canvas)
     accent = rgba(p["accent"], 255)
-    # A blade rather than a bar: pointed at both ends, running lower-left to
-    # upper-right through the middle of the word, as the posters slash theirs.
     blade_h = int(26 * S)
     top = ch // 2 + int(th * 0.62)
     rise = int(ch * 0.30)
@@ -197,9 +194,11 @@ def build_unlock_kanji(p):
     if not Path(cjk).exists():
         return
     canvas = Image.new("RGBA", (cw, ch), (0, 0, 0, 0))
-    # CJK sits high in its em box; nudge it down a touch
-    fit_text(canvas, "死神", ImageFont.truetype(cjk, int(300 * S), index=0),
-             0.62, dy=int(4 * S), weight_passes=1,
+    
+    # CHANGED: Changed index=0 to index=2 to bypass the Chinese character variant
+    # and explicitly load the Japanese regional layout for Noto Sans CJK.
+    fit_text(canvas, "死神", ImageFont.truetype(cjk, int(300 * S), index=2),
+             0.62, dy=int(4 * S), stroke_width=0,
              colour=rgba(p["bright_foreground"], 255))
 
     d = ImageDraw.Draw(canvas)
